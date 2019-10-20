@@ -4,7 +4,7 @@ A websocket python server built using Flask and SocketIO.
 
 ## Features
 
-- Initialize with 676 symbols, from `aa` to `zz`
+- Loads from config: symbols, update frequency, duration of historical data to keep, and num of elements per update.
 
 - Every `update frequency interval` (default 1 second), it picks 50 symbols at random, randomize their price between 0-100000, and emits a websocket stream of the updated symbols and price.
 
