@@ -10,23 +10,18 @@ from flask_cors import CORS
 from string import ascii_lowercase
 from itertools import chain, product
 import pandas as pd
+import config
 
 app = Flask(__name__)
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
-symbols = []
-seconds_to_keep = 300 #Keep 5 mins historical data
-
-# Generate random symbols
-for x in range(1, 3):
-    for combo in product(ascii_lowercase, repeat=x):
-        symbols.append(''.join(combo))
+seconds_to_keep = config.config["seconds_to_keep"] #Keep 5 mins historical data
 
 class server_state():
     def __init__(self):
-        self.symbols = symbols
-        self.update_frequency = 1000
-        self.elements_per_update = 50
+        self.symbols = config.config["symbols"]
+        self.update_frequency = config.config["update_frequency_milliseconds"]
+        self.elements_per_update = config.config["elements_per_update"]
 
         self.prev_update = []
         self.historicalData = pd.DataFrame(columns=['symbol', 'price', 'time'])
