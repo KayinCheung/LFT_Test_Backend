@@ -22,9 +22,6 @@ for x in range(1, 3):
     for combo in product(ascii_lowercase, repeat=x):
         symbols.append(''.join(combo))
 
-
-
-
 class server_state():
     def __init__(self):
         self.symbols = symbols
@@ -38,17 +35,20 @@ class server_state():
 
     #At set intervals, randomly pick 50 tickers, randomize price and emit websocket
     def randomizePrice(self):
+        t = threading.Timer(self.update_frequency / 1000.0, self.randomizePrice)
+        t.start()
+        ts = time.time()
+        print(ts)
+
         self.prev_update = []
 
-        length = len(self.symbols)
         a = self.symbols
         random.shuffle(a)
         to_randomize = a[:self.elements_per_update]
         for ticker in to_randomize:
             self.prev_update.append([ticker, random.randint(1, 100000)])
 
-        ts = time.time()
-        print(ts)
+
         df = pd.DataFrame(self.prev_update, columns=['symbol', 'price'])
         df['time'] = ts
         self.historicalData = self.historicalData.append(df)
@@ -56,18 +56,15 @@ class server_state():
 
         #print(to_randomize)
         socketio.emit('update', {'data': self.prev_update})
-        t = threading.Timer(self.update_frequency/1000.0, self.randomizePrice)
-        t.start()
+
         self.truncateHistoricalData()
 
     # Keep past 5 mins data, discard the rest
     def truncateHistoricalData(self):
         ts = time.time()
         self.historicalData = self.historicalData[self.historicalData["time"] > (ts - seconds_to_keep)]
-        print(self.historicalData)
-
-
-
+        #print(self.historicalData)
+        
 a = server_state()
 
 @app.route("/gethistorical")
