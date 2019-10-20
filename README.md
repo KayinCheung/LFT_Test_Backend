@@ -4,7 +4,9 @@ A websocket python server built using Flask and SocketIO.
 
 ## Features
 
-- Every `update frequency interval` (default 1 second), it picks 50 symbols at random, randomize their price between 0-100000, and emits a websocket stream of the updated symbols.
+- Initialize with 676 symbols, from `aa` to `zz`
+
+- Every `update frequency interval` (default 1 second), it picks 50 symbols at random, randomize their price between 0-100000, and emits a websocket stream of the updated symbols and price.
 
 - Update frequency is configurable down to a minimum of 100ms.
 
