@@ -15,7 +15,7 @@ A websocket python server built using Flask and SocketIO.
 
 ## Deploying server
 
-1) `pip3 install -r requirements`
+1) `pip3 install -r requirements.txt`
 2) `Python3 app.py`
 
 The server will be deployed locally at `http://127.0.0.1:5000`
